@@ -1,0 +1,17 @@
+natality:
+  type: pandas.GBQQueryDataSet
+  sql: >
+    SELECT 
+          year,
+          plurality,
+          apgar_5min,
+          mother_age,
+          father_age,    
+          gestation_weeks,
+          ever_born,
+          mother_married,
+          weight_pounds
+    FROM  `bigquery-public-data.samples.natality`
+    ORDER BY rand()
+    LIMIT 1000
+  project: willapay-mlops-staging

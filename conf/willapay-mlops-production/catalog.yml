@@ -1,0 +1,47 @@
+natality:
+  type: pandas.GBQQueryDataSet
+  sql: >
+    SELECT 
+          year,
+          plurality,
+          apgar_5min,
+          mother_age,
+          father_age,    
+          gestation_weeks,
+          ever_born,
+          mother_married,
+          weight_pounds
+    FROM  `bigquery-public-data.samples.natality`
+    ORDER BY rand()
+    LIMIT 2000
+  project: willapay-mlops-staging
+
+model_input_table:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/model_input_table.pkl
+  backend: pickle
+
+X_test:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/X_test.pkl
+  backend: pickle
+
+X_train:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/X_train.pkl
+  backend: pickle
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_train.pkl
+  backend: pickle
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_test.pkl
+  backend: pickle
+
+regressor:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/regressor.pkl
+  backend: pickle

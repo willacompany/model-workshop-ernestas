@@ -1,0 +1,21 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops-training/model_workshop:${SHORT_SHA}', '.']
+
+  - name: 'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops-training/model_workshop:${SHORT_SHA}'
+    args: ["kedro", "test" ]
+    dir: "/home/kedro"
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: [ 'push', 'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops-training/model_workshop:${SHORT_SHA}']
+
+
+  - name: 'us-central1-docker.pkg.dev/${PROJECT_ID}/mlops-training/model_workshop:${SHORT_SHA}'
+    args: [ "kedro", "vertexai", "-e", "${PROJECT_ID}", "run-once", "--wait-for-completion" ]
+    dir: "/home/kedro"
+    env:
+      - KEDRO_CONFIG_COMMIT_ID=${SHORT_SHA}
+
+timeout: 3600s
+options:
+  logging: CLOUD_LOGGING_ONLY
