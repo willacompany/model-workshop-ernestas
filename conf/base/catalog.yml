@@ -15,3 +15,33 @@ natality:
     ORDER BY rand()
     LIMIT 1000
   project: willapay-mlops-staging
+
+model_input_table:
+  type: pickle.PickleDataSet
+  filepath: data/03_primary/model_input_table.pkl
+  backend: pickle
+
+X_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_test.pkl
+  backend: pickle
+
+X_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/X_train.pkl
+  backend: pickle
+
+y_train:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_train.pkl
+  backend: pickle
+
+y_test:
+  type: pickle.PickleDataSet
+  filepath: data/05_model_input/y_test.pkl
+  backend: pickle
+
+regressor:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/regressor.pkl
+  backend: pickle
