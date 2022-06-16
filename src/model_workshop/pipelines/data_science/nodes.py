@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import logging
 from typing import Dict, Tuple
 
@@ -59,3 +60,10 @@ def evaluate_model(
 
     logger = logging.getLogger(__name__)
     logger.info("Model has a coefficient R^2 of %.3f on test data.", score)
+
+def plot_counts(data: pd.DataFrame, name: str) -> None:
+    plt.bar('dataset', len(data))
+    
+    plt.tight_layout()
+    mlflow.log_figure(plt.gcf(), f"counts/{name}.png")
+    plt.close()
