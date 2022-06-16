@@ -14,7 +14,7 @@ def create_pipeline(**kwargs):
             ),
             node(
                 func=train_model,
-                inputs=["X_train", "y_train"],
+                inputs=["X_train", "y_train", 'params:fit_intercept'],
                 outputs="regressor",
                 name="train_model_node",
             ),

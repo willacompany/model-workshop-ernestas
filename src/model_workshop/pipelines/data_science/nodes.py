@@ -25,7 +25,7 @@ def split_data(data: pd.DataFrame, parameters: Dict) -> Tuple:
     return X_train, X_test, y_train, y_test
 
 
-def train_model(X_train: pd.DataFrame, y_train: pd.Series) -> LinearRegression:
+def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) -> LinearRegression:
     """Trains the linear regression model.
 
     Args:
@@ -36,7 +36,7 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series) -> LinearRegression:
         Trained model.
     """
     mlflow.autolog()
-    regressor = LinearRegression()
+    regressor = LinearRegression(fit_intercept=fit_intercept)
     regressor.fit(X_train, y_train)
     return regressor
 
