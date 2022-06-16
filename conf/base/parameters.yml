@@ -1,5 +1,5 @@
 test_size: 0.2
-random_state: 3
+random_state: 42
 features:
   - year
   - plurality
@@ -8,5 +8,5 @@ features:
   - father_age
   - gestation_weeks
   - ever_born
-  - mother_married
+  # - mother_married
   - weight_pounds
