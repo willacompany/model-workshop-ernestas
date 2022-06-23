@@ -8,7 +8,7 @@ def create_pipeline(**kwargs):
         [
             node(
                 func=preprocess,
-                inputs="natality",
+                inputs=["input_raw", "parameters"],
                 outputs="model_input_table",
                 name="preprocess_node",
             )

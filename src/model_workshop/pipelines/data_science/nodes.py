@@ -4,9 +4,10 @@ from typing import Dict, Tuple
 
 import mlflow
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+
 
 
 def split_data(data: pd.DataFrame, parameters: Dict) -> Tuple:
@@ -19,14 +20,14 @@ def split_data(data: pd.DataFrame, parameters: Dict) -> Tuple:
         Split data.
     """
     X = data[parameters["features"]]
-    y = data["weight_pounds"]
+    y = data[parameters["target"]]
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=parameters["test_size"], random_state=parameters["random_state"]
     )
     return X_train, X_test, y_train, y_test
 
 
-def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) -> LinearRegression:
+def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) -> LogisticRegression:
     """Trains the linear regression model.
 
     Args:
@@ -37,13 +38,13 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) 
         Trained model.
     """
     mlflow.autolog()
-    regressor = LinearRegression(fit_intercept=fit_intercept)
+    regressor = LogisticRegression(fit_intercept=fit_intercept)
     regressor.fit(X_train, y_train)
     return regressor
 
 
 def evaluate_model(
-        regressor: LinearRegression, X_test: pd.DataFrame, y_test: pd.Series
+        regressor: LogisticRegression, X_test: pd.DataFrame, y_test: pd.Series
 ):
     """Calculates and logs the coefficient of determination.
        Uses SHAP explainer to log feature importance.
@@ -54,7 +55,7 @@ def evaluate_model(
         y_test: Testing data for weight.
     """
     y_pred = regressor.predict(X_test)
-    score = r2_score(y_test, y_pred)
+    score = accuracy_score(y_test, y_pred)
 
     mlflow.shap.log_explanation(regressor.predict, X_test)
 
