@@ -6,30 +6,30 @@ input_raw:
 
 model_input_table:
   type: pickle.PickleDataSet
-  filepath: data/03_primary/model_input_table.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/model_input_table.pkl
   backend: pickle
 
 X_test:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/X_test.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/X_test.pkl
   backend: pickle
 
 X_train:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/X_train.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/X_train.pkl
   backend: pickle
 
 y_train:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/y_train.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_train.pkl
   backend: pickle
 
 y_test:
   type: pickle.PickleDataSet
-  filepath: data/05_model_input/y_test.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_test.pkl
   backend: pickle
 
 regressor:
   type: pickle.PickleDataSet
-  filepath: data/06_models/regressor.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/regressor.pkl
   backend: pickle
