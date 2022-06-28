@@ -1,6 +1,6 @@
 [tool.kedro]
 package_name = "model_workshop"
-project_name = "Model Workshop"
+project_name = "Model Workshop Ernestas"
 project_version = "0.17.7"
 
 [tool.isort]

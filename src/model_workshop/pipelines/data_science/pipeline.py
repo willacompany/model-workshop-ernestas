@@ -1,6 +1,9 @@
+
 from kedro.pipeline import Pipeline, node
 
-from .nodes import evaluate_model, split_data, train_model
+from .nodes import evaluate_model, split_data, train_model, plot_counts
+
+
 
 
 def create_pipeline(**kwargs):
@@ -14,7 +17,7 @@ def create_pipeline(**kwargs):
             ),
             node(
                 func=train_model,
-                inputs=["X_train", "y_train"],
+                inputs=["X_train", "y_train", 'params:fit_intercept'],
                 outputs="regressor",
                 name="train_model_node",
             ),
@@ -23,6 +26,12 @@ def create_pipeline(**kwargs):
                 inputs=["regressor", "X_test", "y_test"],
                 outputs=None,
                 name="evaluate_model_node",
+            ),
+            node(
+                func=lambda data: plot_counts(data, 'X_train'),
+                inputs=["X_train"],
+                outputs=None,
+                name="plot_counts_X_train",
             ),
         ]
     )

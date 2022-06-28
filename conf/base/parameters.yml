@@ -1,12 +1,15 @@
-test_size: 0.2
-random_state: 3
+test_size: 0.3
+random_state: 42
+partner_created_at_min: '2022-02-01'
+fit_intercept: True
 features:
-  - year
-  - plurality
-  - apgar_5min
-  - mother_age
-  - father_age
-  - gestation_weeks
-  - ever_born
-  - mother_married
-  - weight_pounds
+  - avg_likes
+  - 6h_approval
+  - is_referred
+  - region_clean_New_York
+  - region_clean_Other
+  - day_approval
+  - thu_fri_approval
+  - ln_followers_count
+  - ln_posts_count
+target: is_activated

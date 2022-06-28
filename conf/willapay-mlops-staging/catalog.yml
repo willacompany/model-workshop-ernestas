@@ -1,20 +1,8 @@
-natality:
-  type: pandas.GBQQueryDataSet
-  sql: >
-    SELECT 
-          year,
-          plurality,
-          apgar_5min,
-          mother_age,
-          father_age,    
-          gestation_weeks,
-          ever_born,
-          mother_married,
-          weight_pounds
-    FROM  `bigquery-public-data.samples.natality`
-    ORDER BY rand()
-    LIMIT 2000
-  project: willapay-mlops-staging
+input_raw:
+  type: pandas.GBQTableDataSet
+  project: willapay-data-staging
+  dataset: dev_kl_reporting
+  table_name: activation_model_features
 
 model_input_table:
   type: pickle.PickleDataSet
