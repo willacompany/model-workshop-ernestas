@@ -1,33 +1,30 @@
-import matplotlib.pyplot as plt
 import logging
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List, Any
 
 import mlflow
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
+from mlflow.models import ModelSignature
+from mlflow.models.signature import infer_signature
+from mlflow.types import ColSpec, Schema, DataType
+import matplotlib.pyplot as plt
+
+from model import WorkshopModel
 
 
-
-def split_data(data: pd.DataFrame, parameters: Dict) -> Tuple:
-    """Splits data into features and targets training and test sets.
-
-    Args:
-        data: Data containing features and target.
-        parameters: Parameters defined in parameters.yml.
-    Returns:
-        Split data.
-    """
-    X = data[parameters["features"]]
-    y = data[parameters["target"]]
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=parameters["test_size"], random_state=parameters["random_state"]
+def infer_model_signature(df: pd.DataFrame) -> ModelSignature:
+    return ModelSignature(
+        infer_signature(model_input=df).inputs,
+        Schema(
+            [
+                ColSpec(type=DataType.float, name="probability"),
+                ColSpec(type=DataType.boolean, name="decision")
+            ]
+        )
     )
-    return X_train, X_test, y_train, y_test
 
-
-def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) -> LogisticRegression:
+def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool, model_features: List) -> WorkshopModel:
     """Trains the linear regression model.
 
     Args:
@@ -37,14 +34,25 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series, fit_intercept: bool) 
     Returns:
         Trained model.
     """
-    mlflow.autolog()
-    regressor = LogisticRegression(fit_intercept=fit_intercept)
-    regressor.fit(X_train, y_train)
-    return regressor
+    model = WorkshopModel(fit_intercept=fit_intercept, model_features=model_features)
+    model.fit_preprocessed(X_train, y_train)
 
+    return model
+
+def log_model(model: WorkshopModel, model_signature: ModelSignature) -> None:
+    conda_env = mlflow.sklearn.get_default_conda_env()
+
+    mlflow.pyfunc.log_model(
+        artifact_path="model",
+        code_path=["src/model.py"],
+        python_model=model,
+        signature=model_signature,
+        artifacts=[],
+        conda_env=conda_env
+    )
 
 def evaluate_model(
-        regressor: LogisticRegression, X_test: pd.DataFrame, y_test: pd.Series
+        model: WorkshopModel, X_test: pd.DataFrame, y_test: pd.Series
 ):
     """Calculates and logs the coefficient of determination.
        Uses SHAP explainer to log feature importance.
@@ -54,13 +62,14 @@ def evaluate_model(
         X_test: Testing data of independent features.
         y_test: Testing data for weight.
     """
-    y_pred = regressor.predict(X_test)
+    y_pred = model.predict_preprocessed(X_test)['decision']
     score = accuracy_score(y_test, y_pred)
 
-    mlflow.shap.log_explanation(regressor.predict, X_test)
+    # mlflow.shap.log_explanation(model.predict, X_test)
 
     logger = logging.getLogger(__name__)
-    logger.info("Model has a coefficient R^2 of %.3f on test data.", score)
+    logger.info("Score: %.3f", score)
+
 
 def plot_counts(data: pd.DataFrame, name: str) -> None:
     plt.bar('dataset', len(data))

@@ -4,7 +4,7 @@ input_raw:
   dataset: dev_kl_reporting
   table_name: activation_model_features
 
-model_input_table:
+data_transformed:
   type: pickle.PickleDataSet
   filepath: data/03_primary/model_input_table.pkl
   backend: pickle
@@ -29,7 +29,12 @@ y_test:
   filepath: data/05_model_input/y_test.pkl
   backend: pickle
 
-regressor:
+model:
   type: pickle.PickleDataSet
-  filepath: data/06_models/regressor.pkl
+  filepath: data/06_models/model.pkl
+  backend: pickle
+
+model_signature:
+  type: pickle.PickleDataSet
+  filepath: data/06_models/model_signature.pkl
   backend: pickle

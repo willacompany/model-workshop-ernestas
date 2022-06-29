@@ -16,7 +16,7 @@ disable_tracking:
 # where the runs are recorded). Change the name to
 # switch between different experiments
 experiment:
-  name: model_workshop
+  name: model_workshop_ernestas
   create: True  # if the specified `name` does not exists, should it be created?
 
 
