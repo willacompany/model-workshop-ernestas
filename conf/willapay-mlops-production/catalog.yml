@@ -4,7 +4,7 @@ input_raw:
   dataset: dev_kl_reporting
   table_name: activation_model_features
 
-model_input_table:
+data_transformed:
   type: pickle.PickleDataSet
   filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/model_input_table.pkl
   backend: pickle
@@ -19,6 +19,16 @@ X_train:
   filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/X_train.pkl
   backend: pickle
 
+X_test_preprocessed:
+  type: pickle.PickleDataSet
+  filepath:  gs://willapay-mlops-production-vertex-temp/${run_id}/X_test_preprocessed.pkl
+  backend: pickle
+
+X_train_preprocessed:
+  type: pickle.PickleDataSet
+  filepath:  gs://willapay-mlops-production-vertex-temp/${run_id}/X_train_preprocessed.pkl
+  backend: pickle
+
 y_train:
   type: pickle.PickleDataSet
   filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_train.pkl
@@ -29,7 +39,12 @@ y_test:
   filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/y_test.pkl
   backend: pickle
 
-regressor:
+model:
   type: pickle.PickleDataSet
-  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/regressor.pkl
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/model.pkl
+  backend: pickle
+
+model_signature:
+  type: pickle.PickleDataSet
+  filepath: gs://willapay-mlops-production-vertex-temp/${run_id}/model_signature.pkl
   backend: pickle
