@@ -19,6 +19,16 @@ X_train:
   filepath: gs://willapay-mlops-staging-vertex-temp/${run_id}/X_train.pkl
   backend: pickle
 
+X_test_preprocessed:
+  type: pickle.PickleDataSet
+  filepath:   gs://willapay-mlops-staging-vertex-temp/${run_id}/X_test_preprocessed.pkl
+  backend: pickle
+
+X_train_preprocessed:
+  type: pickle.PickleDataSet
+  filepath:   gs://willapay-mlops-staging-vertex-temp/${run_id}/X_train_preprocessed.pkl
+  backend: pickle
+
 y_train:
   type: pickle.PickleDataSet
   filepath: gs://willapay-mlops-staging-vertex-temp/${run_id}/y_train.pkl
